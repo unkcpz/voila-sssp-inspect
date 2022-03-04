@@ -23,6 +23,7 @@ dependencies = [
     'ipywidgets~=7.6.5',
     'widget_periodictable~=3.0.0',
     'voila~=0.3.2',
+    'ipympl~=0.8.8',
 ]
 
 
