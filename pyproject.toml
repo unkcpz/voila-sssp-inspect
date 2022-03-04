@@ -1,0 +1,46 @@
+[build-system]
+requires = ['flit_core >=3.4,<4']
+build-backend = 'flit_core.buildapi'
+
+[project]
+name = 'voila-sssp-inspect'
+dynamic = ['version']
+description = 'voila sssp inspect'
+authors = [{name = 'Jusong Yu', email = 'jusong.yu@epfl.ch'}]
+readme = 'README.md'
+license = {file = 'LICENSE.txt'}
+classifiers = [
+    'Development Status :: 5 - Production/Stable',
+    'Framework :: Jupyter',
+    'License :: OSI Approved :: MIT License',
+    'Programming Language :: Python',
+    'Programming Language :: Python :: 3.9',
+    'Programming Language :: Python :: 3.10',
+]
+requires-python = '>=3.9'
+dependencies = [
+    'matplotlib~=3.5.1',
+    'ipywidgets~=7.6.5',
+    'widget_periodictable~=3.0.0',
+    'voila~=0.3.2',
+]
+
+
+[tool.flit.module]
+name = 'sssp_inspect'
+
+[tool.flit.sdist]
+exclude = [
+    'docs/',
+    'tests/',
+]
+
+[tool.flynt]
+line-length = 120
+fail-on-change = true
+
+[tool.isort]
+force_sort_within_sections = true
+include_trailing_comma = true
+line_length = 120
+multi_line_output = 3  # this configuration is compatible with yapf
