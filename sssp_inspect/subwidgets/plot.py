@@ -13,7 +13,7 @@ class PlotDeltaMeasureWidget(ipw.VBox):
         # self.measure_tab = ipw.Tab(title=['Δ-factor', 'νΔ-factor'])
         self.measure_tab = ipw.Tab()
         self.measure_tab.set_title(0, 'Δ-factor')
-        self.measure_tab.set_title(1, 'νΔ-factor')
+        self.measure_tab.set_title(1, 'ν-factor')
 
         # Delta mesure
         self.output_delta_measure = ipw.Output()

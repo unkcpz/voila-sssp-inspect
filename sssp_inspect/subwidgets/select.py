@@ -58,6 +58,9 @@ class PseudoSelectWidget(ipw.VBox):
             self.pseudos_dict = _load_pseudos_from_db(SSSP_DB, self.selected_element)
 
         self.multi_select_widget.options = tuple(self.pseudos_dict.keys()) if self.pseudos_dict else tuple()
+        
+        # the default when choose an element should choose all pseudos
+        self.selected_pseudos = self.pseudos_dict
                 
     def _on_multi_select_widget_change(self, change):
         selected_pseudos = dict()

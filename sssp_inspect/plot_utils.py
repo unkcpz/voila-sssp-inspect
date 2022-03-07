@@ -22,7 +22,7 @@ def delta_measure_hist(pseudos: dict, measure_type):
         ylabel = 'Δ -factor'
     elif measure_type == 'nv_delta':
         keyname = 'rel_errors_vec_length'
-        ylabel = 'νΔ -factor'
+        ylabel = 'ν -factor'
 
     for i, (label, output) in enumerate(pseudos.items()):
         N = len(structures)
@@ -86,7 +86,7 @@ def convergence(pseudos: dict, wf_name, measure_name, ylabel, threshold=None):
             wfc_cutoff = res['final_output_parameters']['wfc_cutoff']
 
             _, pp_family, pp_z, pp_type, pp_version = label.split('/')
-            out_label = f'{pp_z}/{pp_type}(νΔ={avg_delta:.2f})({pp_family}-{pp_version})'
+            out_label = f'{pp_z}/{pp_type}(ν={avg_delta:.2f})({pp_family}-{pp_version})'
 
             ax1.plot(x_wfc, y_wfc, marker='o', color=cmap(i/NUM_COLOR), label=out_label)
             ax2.plot(x_rho, y_rho, marker='o', color=cmap(i/NUM_COLOR), label=f'cutoff wfc = {wfc_cutoff} Ry')
