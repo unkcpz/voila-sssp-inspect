@@ -24,6 +24,42 @@ def _load_pseudos_from_db(db, element):
 
     return pseudos
 
+
+class SelectMultipleCheckbox(ipw.VBox):
+    """ Widget with a search field and lots of checkboxes """
+    options = traitlets.List()
+    value = traitlets.List()
+    
+    def __init__(self, options=[], tick_all=True, **kwargs):
+        self.tick_all = tick_all
+        checkbox_list = [
+            ipw.Checkbox(description=desc, value=tick_all) for desc in options
+        ]
+
+        super().__init__(children=checkbox_list, **kwargs)
+        
+        self._update_checkbox_group()
+        
+    def _update_checkbox_group(self):
+        for checkbox in self.children:
+            checkbox.observe(self._on_any_checkbox_change, names='value')
+        self._reset_value()
+        
+    def _on_any_checkbox_change(self, change):
+        self._reset_value()
+        
+    def _reset_value(self):
+        self.value = [w.description for w in self.children if w.value]
+        
+    @traitlets.observe('options')
+    def _observe_options_change(self, change):
+        # when options list change update all checkboxes
+        self.children = [
+            ipw.Checkbox(description=desc, value=self.tick_all) for desc in self.options
+        ]
+        
+        self._update_checkbox_group()
+
 class PseudoSelectWidget(ipw.VBox):    
     selected_element = traitlets.Unicode(allow_none=True)
     selected_pseudos = traitlets.Dict()
@@ -32,7 +68,7 @@ class PseudoSelectWidget(ipw.VBox):
     
     def __init__(self):
         self.help_info = ipw.HTML(self.NO_ELEMENT_INFO)
-        self.multi_select_widget = ipw.SelectMultiple(
+        self.multi_select_widget = SelectMultipleCheckbox(
             disabled=False,
             layout=ipw.Layout(width='98%')
         )
