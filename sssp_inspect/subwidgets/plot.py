@@ -12,8 +12,8 @@ class PlotDeltaMeasureWidget(ipw.VBox):
         # measure button
         # self.measure_tab = ipw.Tab(title=['Δ-factor', 'νΔ-factor'])
         self.measure_tab = ipw.Tab()
-        self.measure_tab.set_title(0, 'Δ-factor')
-        self.measure_tab.set_title(1, 'ν-factor')
+        self.measure_tab.set_title(0, 'ν-factor')
+        self.measure_tab.set_title(1, 'Δ-factor')
 
         # Delta mesure
         self.output_delta_measure = ipw.Output()
@@ -27,17 +27,19 @@ class PlotDeltaMeasureWidget(ipw.VBox):
         
     @traitlets.observe('selected_pseudos')
     def _on_pseudos_change(self, change):
-        out_delta = ipw.Output()
         out_nv_delta = ipw.Output()
+        out_delta = ipw.Output()
+        
+        with out_nv_delta:
+            fig = delta_measure_hist(change['new'], 'nv_delta')
+            display(fig)
+            
         with out_delta:
             fig = delta_measure_hist(change['new'], 'delta')
             display(fig)
 
-        with out_nv_delta:
-            fig = delta_measure_hist(change['new'], 'nv_delta')
-            display(fig)
 
-        children = [out_delta, out_nv_delta]
+        children = [out_nv_delta, out_delta]
         self.measure_tab.children = children
 
 class _PlotConvergenBaseWidget(ipw.VBox):
