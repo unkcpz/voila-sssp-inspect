@@ -32,33 +32,64 @@ class SelectMultipleCheckbox(ipw.VBox):
     
     def __init__(self, options=[], tick_all=True, **kwargs):
         self.tick_all = tick_all
-        checkbox_list = [
-            ipw.Checkbox(description=desc, value=tick_all) for desc in options
-        ]
-
-        super().__init__(children=checkbox_list, **kwargs)
-        
+        self.checkbox_dict = {
+            f'{desc}': ipw.Checkbox(description=self._parse_desc(desc), 
+                                    value=self.tick_all, 
+                                    style={'description_width': 'initial'}) 
+            for desc in self.options
+        }
         self._update_checkbox_group()
+
+        super().__init__(children=list(self.checkbox_dict.values()), **kwargs)
         
     def _update_checkbox_group(self):
-        for checkbox in self.children:
+        # Update the checkbox widgets view
+        self.children = list(self.checkbox_dict.values())
+        # Since all checkboxes are recreated set the observe for all off them
+        for checkbox in self.checkbox_dict.values():
             checkbox.observe(self._on_any_checkbox_change, names='value')
+        
+        # reset the outpput values
         self._reset_value()
         
     def _on_any_checkbox_change(self, change):
+        # Any time any checkbox ticked or unticked reset
         self._reset_value()
         
     def _reset_value(self):
-        self.value = [w.description for w in self.children if w.value]
+        self.value = [label for label, checkbox in 
+                      self.checkbox_dict.items() if checkbox.value]
         
     @traitlets.observe('options')
     def _observe_options_change(self, change):
-        # when options list change update all checkboxes
-        self.children = [
-            ipw.Checkbox(description=desc, value=self.tick_all) for desc in self.options
-        ]
+        # when options list (element rechoose) change update all checkboxes
+        self.checkbox_dict = {
+            f'{desc}': ipw.Checkbox(description=self._parse_desc(desc), 
+                                    value=self.tick_all, 
+                                    style={'description_width': 'initial'}) 
+            for desc in self.options
+        }
         
         self._update_checkbox_group()
+        
+    @staticmethod
+    def _parse_desc(desc):
+        """parse the label to more explainable line"""
+        _, pp_family, pp_z, pp_type, pp_version = desc.split('/')
+        if pp_type == 'nc':
+            pp_type = 'Norm-conserving'
+        if pp_type == 'us':
+            pp_type = 'Ultrasoft'
+        if pp_type == 'paw':
+            pp_type = 'PAW'
+            
+        if pp_family == 'psl':
+            pp_family = 'PSlibrary'
+    
+        
+        out_label = f"""{pp_z}\t|\t{pp_type}\t|\t{pp_family}-{pp_version}"""
+        
+        return out_label
 
 class PseudoSelectWidget(ipw.VBox):    
     selected_element = traitlets.Unicode(allow_none=True)

@@ -27,7 +27,7 @@ class SummaryWidget(ipw.VBox):
 
 def print_summary(pseudos: dict):
 
-    print('Label\t\t\t|Cohesive energy|\t|Phonon frequencies|\t|Pressue|')
+    print('Label\t\t\t|Cohesive energy|\t|Phonon frequencies|\t|Pressure|')
     for label, output in pseudos.items():
         try:
             res_coh = output['convergence_cohesive_energy']['final_output_parameters']
