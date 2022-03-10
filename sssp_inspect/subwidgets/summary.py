@@ -37,4 +37,4 @@ def print_summary(pseudos: dict):
                 f'\t({res_phonon["wfc_cutoff"]}, {res_phonon["rho_cutoff"]:.2f})'
                 f'\t({res_pressure["wfc_cutoff"]}, {res_pressure["rho_cutoff"]:.2f})')
         except Exception as e:
-            raise e
+            pass
