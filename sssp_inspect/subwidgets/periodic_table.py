@@ -1,5 +1,4 @@
 import ipywidgets as ipw
-
 from widget_periodictable import PTableWidget
 
 __all__ = ("PeriodicTable",)
@@ -27,16 +26,16 @@ class PeriodicTable(ipw.VBox):
                 "visibility": "visible" if extended else "hidden",
             },
         )
-        
+
         super().__init__(
-            children=(self.ptable_container, ),
+            children=(self.ptable_container,),
             layout=kwargs.get("layout", {}),
         )
 
     @property
     def value(self) -> dict:
         """Return value for wrapped PTableWidget"""
-        
+
         return not self.select_any_all.value, self.ptable.selected_elements.copy()
 
     @property
